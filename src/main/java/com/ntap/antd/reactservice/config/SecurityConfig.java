@@ -127,8 +127,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/CheckUsernameAvailability",
                         "/api/user/CheckEmailAvailability")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/**/**", "/api/**/**")
-                .permitAll()
+                .antMatchers(HttpMethod.GET, "/api/**/**", "/api/**/**").permitAll()
+                // swagger start
+                .antMatchers("/swagger-ui.html").permitAll()
+//                .antMatchers("/configuration/security").permitAll()
+                .antMatchers("/swagger-resources/**").permitAll()
+                .antMatchers("/swagger-resources/configuration/ui").permitAll()
+                .antMatchers("/images/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/configuration/ui").permitAll()
+                .antMatchers("configuration/security").permitAll()
+                // swagger end
+                // 所有请求都需要认证
+
                 .anyRequest()
                 .authenticated();
 
