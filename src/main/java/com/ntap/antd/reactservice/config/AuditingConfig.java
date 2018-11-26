@@ -1,5 +1,8 @@
 package com.ntap.antd.reactservice.config;
 
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
 /**
  * Created with IntelliJ IDEA.
  *
@@ -11,5 +14,8 @@ package com.ntap.antd.reactservice.config;
  * To change this template use File | Settings | File Templates.
  * @Description ${DESCRIPTION}
  */
+
+@Configuration
+@EnableJpaAuditing
 public class AuditingConfig {
 }

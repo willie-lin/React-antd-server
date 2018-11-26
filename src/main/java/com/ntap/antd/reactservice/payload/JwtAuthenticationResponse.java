@@ -26,4 +26,12 @@ public class JwtAuthenticationResponse {
 
     private String tokenType = "Bearer";
 
+    /**
+     * 采用依赖注入的方式
+     * @param accessToken
+     */
+
+    public JwtAuthenticationResponse(String accessToken) {
+        this.accessToken = accessToken;
+    }
 }

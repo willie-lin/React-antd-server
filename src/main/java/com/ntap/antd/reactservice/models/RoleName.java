@@ -3,6 +3,7 @@ package com.ntap.antd.reactservice.models;
 /**
  * Created with IntelliJ IDEA.
  *
+ * @author YuAn
  * @Package: com.ntap.antd.reactservice.models
  * @auther: YuAn
  * @Date: 2018/11/20
@@ -12,6 +13,8 @@ package com.ntap.antd.reactservice.models;
  * @Description:
  */
 public enum RoleName {
-    ROLE_NAME,  ROLE_ADMIN
+    ROLE_USER,
+
+    ROLE_ADMIN
 
 }

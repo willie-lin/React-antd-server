@@ -14,7 +14,7 @@ import java.time.Instant;
 
 /**
  * Created with IntelliJ IDEA.
- *
+ * @author YuAn
  * @Package: com.ntap.antd.reactservice.models
  * @auther: YuAn
  * @Date: 2018/11/20
@@ -27,15 +27,33 @@ import java.time.Instant;
 @Data
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createAt", "updatedAt"},
-allowGetters = true)
+@JsonIgnoreProperties(
+        value = {"createdAt", "updatedAt"},
+        allowGetters = true
+)
 public abstract class DateAudit implements Serializable {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    private Instant createAt;
+    private Instant createdAt;
 
     @LastModifiedDate
     @Column(nullable = false)
-    private Instant updateAt;
+    private Instant updatedAt;
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

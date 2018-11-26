@@ -2,6 +2,7 @@ package com.ntap.antd.reactservice.models;
 
 import com.ntap.antd.reactservice.models.audit.DateAudit;
 import lombok.*;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import java.util.Set;
 /**
  * Created with IntelliJ IDEA.
  *
+ * @author YuAn
  * @Package: com.ntap.antd.reactservice.models
  * @auther: YuAn
  * @Date: 2018/11/20
@@ -46,6 +48,7 @@ public class User extends DateAudit {
     @Size(max = 20)
     private String username;
 
+    @NaturalId
     @NotBlank
     @Size(max = 40)
     private String email;
@@ -55,7 +58,9 @@ public class User extends DateAudit {
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles", inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
 
