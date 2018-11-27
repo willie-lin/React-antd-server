@@ -1,7 +1,10 @@
 package com.ntap.antd.reactservice.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+import java.util.Optional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,4 +21,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @Configuration
 @EnableJpaAuditing
 public class AuditingConfig {
+
+    public AuditorAware<Long> auditorProvider() {
+        return new SpringSecurityAuditAwareImpl();
+    }
 }
+
+
+
