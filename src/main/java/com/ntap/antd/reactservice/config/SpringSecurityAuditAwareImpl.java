@@ -21,8 +21,10 @@ import java.util.Optional;
  * @Description ${DESCRIPTION}
  */
 public class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
+
     @Override
     public Optional<Long> getCurrentAuditor() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {

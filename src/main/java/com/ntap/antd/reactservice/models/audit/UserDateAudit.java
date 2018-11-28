@@ -1,5 +1,6 @@
 package com.ntap.antd.reactservice.models.audit;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -19,6 +20,7 @@ import javax.persistence.Column;
  */
 
 @Data
+@AllArgsConstructor
 public abstract class UserDateAudit extends DateAudit {
 
     @CreatedBy
