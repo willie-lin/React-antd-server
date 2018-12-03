@@ -69,7 +69,7 @@ public class UserController {
 
     @ApiOperation(value = "username", notes = "个人详情页")
     @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String")
-    @GetMapping("/user/{username}")
+    @GetMapping("/users/{username}")
     public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User", "Username", username));
 

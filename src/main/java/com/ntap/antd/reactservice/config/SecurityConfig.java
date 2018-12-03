@@ -12,6 +12,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,6 +32,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * To change this template use File | Settings | File Templates.
  * @Description ${DESCRIPTION}
  */
+
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -69,38 +72,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
-//    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-////    @Override
-////    public AuthenticationManager authenticationManager() throws Exception {
-////        return super.authenticationManager();
-////    }
-
-    /**
-     *
-     * @param http
-     * @throws Exception
-     * 构建一个API，用他们的名字，用户名，电子邮件和密码注册新用户。
-     *
-     * 构建API以允许用户使用其用户名/电子邮件和密码登录。验证用户凭据后，API应生成JWT身份验证令牌并在响应中返回令牌。
-     *
-     * 客户端将在Authorization所有请求的标头中发送此JWT令牌以访问任何受保护资源。
-     *
-     * 配置Spring安全性以限制对受保护资源的访问。例如，
-     *
-     * 每个人都应该可以访问用于登录，注册以及任何静态资源（如图像，脚本和样式表）的API。
-     *
-     * 用于创建投票，投票到投票等的API应仅供经过身份验证的用户访问。
-     *
-     * 如果客户端尝试在没有有效JWT令牌的情况下访问受保护资源，则将Spring安全性配置为抛出401未经授权的错误。
-     *
-     * 配置基于角色的授权以保护服务器上的资源
-     */
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //        super.configure(http);
-        http.cors()
+        http
+                .cors()
                 .and()
                 .csrf()
                 .disable()
@@ -117,34 +92,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.gif",
                         "/**/*.svg",
                         "/**/*.jpg",
-                        "/**/*.jpeg",
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
                 .antMatchers("/api/auth/**")
                 .permitAll()
-                .antMatchers("/api/user/CheckUsernameAvailability",
-                        "/api/user/CheckEmailAvailability")
+                .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/api/**/**", "/api/**/**").permitAll()
-                // swagger start
-                .antMatchers("/swagger-ui.html").permitAll()
-//                .antMatchers("/configuration/security").permitAll()
-                .antMatchers("/swagger-resources/**").permitAll()
-                .antMatchers("/swagger-resources/configuration/ui").permitAll()
-                .antMatchers("/images/**").permitAll()
-                .antMatchers("/webjars/**").permitAll()
-                .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/configuration/ui").permitAll()
-                .antMatchers("configuration/security").permitAll()
-                // swagger end
-                // 所有请求都需要认证
-
+                .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
+                .permitAll()
+                .antMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs")
+                .permitAll()
                 .anyRequest()
                 .authenticated();
 
-                        http.addFilterBefore(jwtAuthenticationFilter(),
-                        UsernamePasswordAuthenticationFilter.class);
-        }
+        // Add our custom JWT security filter
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().mvcMatchers(HttpMethod.OPTIONS, "/**");
+        // ignore swagger
+        web.ignoring().mvcMatchers("/swagger-ui.html/**", "/configuration/**", "/swagger-resources/**", "/v2/api-docs");
+    }
+
 }
